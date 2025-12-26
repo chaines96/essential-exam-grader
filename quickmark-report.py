@@ -18,28 +18,28 @@ for entrant in entrants:
 #Variables
 WEEK = 0
 comparison = list()
-amount_of_questions= 25 #How many questions available for each quiz.
+amount_of_questions = 25 #How many questions available this quiz
 
-#Evaluate each pick, of every week.
+#Evaluate each pick of every answer in every quiz.
 for pick in student_answers:
     if pick[-1] != WEEK: #only runs if week is different
         WEEK = pick[-1] #Determine which week we are comparing, which we assume is the last column
         for answer in answer_key:
             #This finds the week of the given pick
             if answer[0] == WEEK:
-                comparison = winner[:]
+                comparison = answer[:]
                 amount_of_questions = len(comparison) - 4
     #The comparison array now contains the correct values.
-    weekly_score = 0
+    quiz_score = 0
     for i in range(2,amount_of_questions):
         if pick[i] == comparison[i-1]:
-            weekly_score = weekly_score + 1
+            quiz_score = quiz_score + 1
     try:
-        scoreboard[(pick[0],pick[1])][int(WEEK)-1] = weekly_score
+        scoreboard[(pick[0],pick[1])][int(WEEK)-1] = quiz_score
     except:
-        pass #The entrant is not in the entrants. Score not updated.
+        pass #The entrant is not in the registrants. Score not updated.
 
-#Given the quiz scores, we now compute all scores.
+#Given the weekly scores, we now compute all scores.
 for score in scoreboard:
     total = 0
     for i in range(0,25):
