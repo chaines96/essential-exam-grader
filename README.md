@@ -1,4 +1,4 @@
-# quickmark-report
+# Essential Exam Grader
 A program which can mark CSVs of answers accross quizzes and saves a report of the final scores for each entrant. 
 
 The structure and default names for the CSVs are as follows:
