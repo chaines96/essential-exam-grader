@@ -21,7 +21,7 @@ def evaluate_quizzes(entrant_path="entrants.csv", selections_path="selections.cs
     while(quiz_index < total_quizzes):
         quiz_index = quiz_index + 1
         try:
-            selections_quizfile = open("Quiz" + str(quiz_index) + "_Selections.csv", encoding="utf8")
+            selections_quizfile = open("Quiz_" + str(quiz_index) + ".csv", encoding="utf8")
             selections_list.append(csv.reader(selections_quizfile, delimiter=','))
             selections_list_num.append(quiz_index)
         except Exception as e:
@@ -56,19 +56,19 @@ def evaluate_quizzes(entrant_path="entrants.csv", selections_path="selections.cs
     #Variables
     QUIZ = 0
     comparison = list()
-    amount_of_questions = 25 #How many questions in this quiz.
+    amount_of_questions = 25 #How many questions in this quiz. This specific value is a placeholder.
 
     #Evaluate each pick, of every week.
     for pick in selections:
         if pick[-1] != QUIZ: #only runs if week is different
             QUIZ = pick[-1]
             try:
-                int(QUIZ) #If the last column is a number, by convention, we consider that the week number and we use it instead of the week index.
+                int(QUIZ) #If the last column is a number, by convention, we consider that the index for the quiz and we use it.
             except Exception as e:
                 print(e)
                 continue
             for answer in answers:
-                #This finds the week of the given pick
+                #This finds the index of the given quiz.
                 if answer[0] == QUIZ:
                     comparison = answer[:]
                     amount_of_questions = len(comparison) - 1
@@ -123,11 +123,13 @@ def evaluate_quizzes(entrant_path="entrants.csv", selections_path="selections.cs
             total = total + scoreboard[score][i]
         scoreboard[score][total_quizzes] = total
         with open("out.csv", "a", encoding="utf8") as f:
-            output_string = str(score[0]) + "," + str(score[1]) + ","
-            for k in range (0,(total_quizzes+1)): #The total is total_quizzes+1 because we write the final score too.
-                output_string = output_string + str(scoreboard[score][k]) + ","
-            output_string = output_string + "\n"
-            f.write(output_string)
+            with open("prev.csv", "w",encoding="utf8") as g: #This file will be used as the prev for the next run, and thus will overwrite the old file.
+                output_string = str(score[0]) + "," + str(score[1]) + ","
+                for k in range (0,(total_quizzes+1)): #The total is total_quizzes+1 because we write the final score too.
+                    output_string = output_string + str(scoreboard[score][k]) + ","
+                output_string = output_string + "\n"
+                f.write(output_string)
+                g.write(output_string)
 
 def main():
     entrant_path="entrants.csv"
